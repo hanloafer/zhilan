@@ -6,6 +6,12 @@ package compnent
 	public class MyRect extends Sprite
 	{
 		private var _lable:TextField;
+		/**
+		 * 
+		 * @param lableName
+		 * @param color
+		 * 
+		 */		
 		public function MyRect(lableName:String,color:uint)
 		{
 			this.graphics.beginFill(color);
