@@ -15,6 +15,8 @@ package
 		private var pokerAry:Array = [];
 		
 		/**
+		 * i love my lulu
+		 * 
 		 * i love you lanlan
 		 * 
 		 * this is my wife's run class 
