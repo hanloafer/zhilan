@@ -25,7 +25,7 @@ package
 		public function game()
 		{
 			var signAry:Array = ["A","B","C","D"];
-			for(var j=0;j<signAry.length;j++){
+			for(var j:int=0;j<signAry.length;j++){
 				var valueAry:Array = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
 				for(var i:int=0;i<valueAry.length;i++){
 					var _poker:Poker = new Poker(signAry[j], valueAry[i]);
