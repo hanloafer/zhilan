@@ -74,49 +74,31 @@ package pokergame
 		}
 		
 		private function drawSign():void{
-			var shang:Sprite = getSignImg();// ?????why shang's type can not use MovieClip
-			shang.x = 25;
-			shang.y = 35;
+			var shang:Sprite = new PokerSign(sign);// ?????why shang's type can not use MovieClip
+			shang.x = 11;
+			shang.y = 23;
 			shang.scaleX = 0.105;
 			shang.scaleY = 0.105;
-			shang.rotation = 180;
+			//shang.rotation = 180;
 			addChild(shang);
 			
-			var zhong:Sprite = getSignImg();
-			zhong.x = 45;
-			zhong.y = 55;
+			var zhong:Sprite = new PokerSign(sign);
+			zhong.x = 44;
+			zhong.y = 57;
 			zhong.scaleX = 0.15;
 			zhong.scaleY = 0.15;
-			zhong.rotation = 180;
 			addChild(zhong);
 			
-			var xia:Sprite = getSignImg();
-			xia.x = 45;
-			xia.y = 60;
+			var xia:Sprite = new PokerSign(sign);
+			xia.x = 47;
+			xia.y = 59;
 			xia.scaleX = 0.105;
 			xia.scaleY = 0.105;
 			addChild(xia);
+			zhong.rotation = 180;
 		}
 		
 		// !!!!!!why can return sprite?????
-		private function getSignImg():Sprite{
-			switch(sign){
-				case "A":
-					return new HongTao();
-					break;
-				case "B":
-					return new HeiTao();
-					break;
-				case "C":
-					return new FangKuai();
-					break;
-				case "D":
-					return new MeiHua();
-					break;
-			}
-			return null;//!!!!!! why need return ????????
-			
-		}
 		
 		
 	}
