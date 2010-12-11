@@ -13,6 +13,11 @@ package
 	public class game extends Sprite
 	{
 		private var pokerAry:Array = [];
+		
+		/**
+		 * this is my wife's run class 
+		 * 
+		 */		
 		public function game()
 		{
 			var signAry:Array = ["A","B","C","D"];
