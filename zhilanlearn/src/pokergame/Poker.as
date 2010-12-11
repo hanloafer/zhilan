@@ -1,4 +1,4 @@
-package Container
+package pokergame
 {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;

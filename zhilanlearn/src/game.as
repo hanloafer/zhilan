@@ -1,7 +1,7 @@
 package
 {
-	import Container.Poker;
-	import Container.PuKe;
+	import pokergame.Poker;
+	import pokergame.PuKe;
 	
 	import compnent.SampleClickAndDoubleClick;
 	import compnent.SampleKeyInput;
