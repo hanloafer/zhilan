@@ -2,6 +2,7 @@ package pokergame
 {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	
 	/**
@@ -17,7 +18,6 @@ package pokergame
 		 * @param value		["A",2,3,4,5,6,7,8,9,10,"J","Q","K"]
 		 * 
 		 */		
-		
 		public var sign:String;
 		public var value:String;
 		
@@ -27,7 +27,8 @@ package pokergame
 			this.sign = sign;// !!!!!!!!!!!!!!!!!!!why add this ????????????????????????
 			this.value = value;
 			drawPoker();
-			
+			this.mouseChildren = false;
+			this.cacheAsBitmap = true;	//?????????????????
 		}
 		
 		private function drawPoker():void{
@@ -99,7 +100,18 @@ package pokergame
 		}
 		
 		// !!!!!!why can return sprite?????
+		public function beginDrag(e:MouseEvent=null):void{
+			if(e.target is Poker){
+				var pok:Poker = e.target as Poker;
+				
+			}else{
+				trace("[beginDrag 的目标不是poker]");
+			}
+		}
 		
+		public function endDrag(e:MouseEvent):void{
+			
+		}
 		
 	}
 }

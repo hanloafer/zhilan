@@ -3,10 +3,11 @@ package pokergame
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	
 	public class PokerTable extends Sprite
 	{
-		private var _pokerAry:Array = [];
+		private var pokerAry:Array = [];
 		private var dragedPoker:Poker;
 		
 		public function PokerTable()
@@ -32,59 +33,45 @@ package pokergame
 			addEventListenerToPoker();
 		}
 		
-		// 主意什么时候该加下划线,为什么要加下划线
-
-
-		public function get pokerAry():Array{
-			return _pokerAry;
-		}
-		
-		public function set pokerAry(value:Array):void{
-			this._pokerAry = value;
-		}
-		
 		public function addEventListenerToPoker():void{
 			for(var i:int=0;i<pokerAry.length;i++){
-				Poker(pokerAry[i]).addEventListener(MouseEvent.MOUSE_DOWN,beginDrag);
-				this.stage.addEventListener(MouseEvent.MOUSE_UP,endDrag);
+				Poker(pokerAry[i]).addEventListener(MouseEvent.MOUSE_DOWN,onMouseDown);
+				this.stage.addEventListener(MouseEvent.MOUSE_UP,onMouseUp);
 			}
 		}
+		private var pokerToMouse:Point;
 		
-		public function beginDrag(e:MouseEvent):void{
-			//Poker(e.target).startDrag();
-			//不建议这么写，有可能会报类型转换错误   
+		public function onMouseDown(e:MouseEvent):void{
 			var poker:Poker = e.target as Poker;
 			if(poker != null){
-				poker.startDrag(true);
 				dragedPoker = poker;
+				beginDrag();
 				this.setChildIndex(dragedPoker,this.numChildren-1);
+				pokerToMouse = new Point(e.localX,e.localY);
 			}else{
 				trace("[beginDrag 的目标不是poker]");
 			}
-			
-//			上述写法等价于=>
-//			if(e.target is Poker){
-//				Poker(e.target).startDrag(true);
-//			}else{
-//				trace("[beginDrag 的目标不是poker]");
-//			}
-		}
-		public function onDrag(e:MouseEvent):void{
-			if(e.target is Poker){
-				var pok:Poker = e.target as Poker;
-				pok.x = 
-			}else{
-			    trace("[beginDrag 的目标不是poker]");
-			}
 		}
 		
-		public function endDrag(e:MouseEvent):void{
+		public function beginDrag():void{
+			this.stage.addEventListener(MouseEvent.MOUSE_MOVE,movePoker);
+		}
+		
+		public function movePoker(e:MouseEvent):void{
+			dragedPoker.x = this.mouseX-pokerToMouse.x;
+			dragedPoker.y = this.mouseY-pokerToMouse.y;
+		}
+		
+		public function onMouseUp(e:MouseEvent):void{
 			if(dragedPoker != null ){
-				dragedPoker.stopDrag();
-				
+				endDrag();
 			}else{
 				trace("[endDrag 的目标不是poker]");
 			}
+		}
+		
+		public function endDrag():void{
+			this.stage.removeEventListener(MouseEvent.MOUSE_MOVE,movePoker);
 		}
 	}
 }
