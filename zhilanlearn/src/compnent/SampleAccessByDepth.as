@@ -1,7 +1,5 @@
-package pokergame
+package compnent
 {
-	import compnent.CircleSprtie;
-	import compnent.RectSprite;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;

@@ -41,7 +41,7 @@ package pokergame
 		public function drawBorder():void{
 			this.graphics.beginFill(0xffffff,1);
 			graphics.lineStyle(1,0x000000);
-			graphics.drawRoundRect(10,10,50,75,3,3);
+			graphics.drawRoundRect(10,10,50,75,7.5,7.5);
 			graphics.endFill();
 		}
 		

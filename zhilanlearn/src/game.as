@@ -1,17 +1,13 @@
 package
 {
-	import compnent.SampleClickAndDoubleClick;
-	import compnent.SampleKeyInput;
-	import compnent.SampleMouseAndKey;
-	
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
 	import pokergame.Poker;
-	import pokergame.PokerTable;
-	import pokergame.PuKe;
+	import pokergame.Group;
+	import pokergame.Table;
 	
-	import test.DragTest;
+	import test.TestPokerGroup;
 	
 	public class game extends Sprite
 	{
@@ -27,14 +23,8 @@ package
 		 */		
 		public function game()
 		{
-			/*var bg:Sprite = new Sprite();
-			bg.graphics.beginFill(0x664455);
-			bg.graphics.drawRect(0,0,stage.stageWidth, stage.stageHeight);
-			bg.graphics.endFill();
-			addChild(bg);*/
 			
-			
-			addChild(new PokerTable());
+			addChild(new TestPokerGroup());
 			
 		}
 	}
