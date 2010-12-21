@@ -120,12 +120,14 @@ package pokergame
 			dragedPoker.x = this.mouseX - pokerToMouseVector.x;
 			dragedPoker.y = this.mouseY - pokerToMouseVector.y;
 			var pok:Poker = e.target as Poker;
-			var pokerInGroup:Group = pok.parent;
+			//这个个错误都是父类不能赋给子类， 虽然你知道他的真正类型但是编译器不知道
+			//编译器只认你的方法返回值 或者 属性是什么类型，所以就提示错误
+			var pokerInGroup:Group = pok.parent as Group;// DiaplayObjectContainer 不能赋给Group  getChildAt返回DiaplayObjectContainer类型
 			var numPokerInGroup:int = pokerInGroup.numChildren;
 			var indexOfPoker:int = pokerInGroup.getChildIndex(pok);
 			if(indexOfPoker<numPokerInGroup-1){
 				for(var i:int=indexOfPoker;i<numPokerInGroup-1;i++){
-					var nextPoker:Poker = PokerInGroup.getChildAt(i);
+					var nextPoker:Poker = pokerInGroup.getChildAt(i) as Poker;// DiaplayObject 不能赋给Poker  getChildAt返回DiaplayObject类型
 					var j:int = 1;
 					nextPoker.x = dragedPoker.x;
 					nextPoker.y = dragedPoker.y *j;
