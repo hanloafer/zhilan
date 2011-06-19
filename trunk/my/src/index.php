@@ -10,6 +10,8 @@
 Hello My
 
  <?php
+ 
+ 	require_once(dirname(__FILE__) . '/config.php');
 
      $app_id = APP_ID;
 
