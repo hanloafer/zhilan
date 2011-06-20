@@ -18,7 +18,7 @@ Hello My
      $canvas_page = CANVAS_PAGE;
 
      $auth_url = "http://www.facebook.com/dialog/oauth?client_id="
-            . $app_id . "&redirect_uri=" . urlencode($canvas_page);
+            . $app_id . "&redirect_uri=" . urlencode($canvas_page) . "&scope=email,read_stream";
 
      $signed_request = $_REQUEST["signed_request"];
 
