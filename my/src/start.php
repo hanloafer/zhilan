@@ -31,9 +31,8 @@
     //echo ("Feed Post Id: " . $_REQUEST["post_id"]);
  }
  
- echo 	"<form action=''>" .
- 		"	<input type='submit' onclick='onClick' text='click'/>" .
-		"</form>"
+ echo 	
+ 		"	<input type='button' onclick='onClick' text='click'/>" 
 		
  echo 	"<script>" .
  		"	function onClick(){
