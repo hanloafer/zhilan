@@ -8,7 +8,7 @@
  
  require_once(dirname(__FILE__) . '/config.php');
  
- echo 	"<script>" .
+ echo 	"<script type='text/javascript'>" .
  		"	function onbClick(){
  			top.location.href=$feed_url;
  		}" .
