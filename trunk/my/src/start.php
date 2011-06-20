@@ -26,12 +26,12 @@
         . "&message=" . $message;
 
  if (empty($_REQUEST["post_id"])) {
-    echo("<script> top.location.href='" . $feed_url . "'</script>");
+    //echo("<script> top.location.href='" . $feed_url . "'</script>");
  } else {
-    echo ("Feed Post Id: " . $_REQUEST["post_id"]);
+    //echo ("Feed Post Id: " . $_REQUEST["post_id"]);
  }
  
- echo 	"<form action='$feed_url'>" .
+ echo 	"<form action='top.location.href=' . $feed_url . '>" .
  		"	<input type='submit' text='click'/>" .
 		"</form>"
  
