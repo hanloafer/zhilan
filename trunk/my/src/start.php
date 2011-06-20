@@ -8,11 +8,11 @@
  
  require_once(dirname(__FILE__) . '/config.php');
  
- echo 	"<script type='text/javascript'>" .
- 		"	function onbClick(){
- 			top.location.href=$feed_url;
- 		}" .
- 		"</script>";
+// echo 	"<script type='text/javascript'>" .
+// 		"	function onbClick(){
+// 			top.location.href=$feed_url;
+// 		}" .
+// 		"</script>";
  
  echo '====================================== INFO ============================================';
  foreach ($_REQUEST as $key => $value){
