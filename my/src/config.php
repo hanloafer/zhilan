@@ -9,6 +9,8 @@
  define("APP_ID", 210879042280647);
  define("CANVAS_PAGE", "http://apps.facebook.com/my_lhan/");
  
+ define("START_PAGE", 'http://apps.facebook.com/my_lhan/start.php');
+ 
  
  
 ?>
