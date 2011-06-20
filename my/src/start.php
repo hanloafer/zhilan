@@ -6,7 +6,9 @@
  * Window - Preferences - PHPeclipse - PHP - Code Templates
  */
  
- 
+ foreach ($_REQUEST as $key => $value){
+ 	echo '<br>' . $key . "=" . $value;
+ }
 ?>
 
 start!
