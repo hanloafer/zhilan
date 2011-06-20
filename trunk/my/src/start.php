@@ -9,7 +9,7 @@
  require_once(dirname(__FILE__) . '/config.php');
  
  echo 	"<script>" .
- 		"	function onClick(){
+ 		"	function onbClick(){
  			top.location.href=$feed_url;
  		}" .
  		"</script>";
@@ -38,7 +38,7 @@
  }
  
  echo 	
- 		"	<input type='button' onclick='onClick' text='click'/>" 
+ 		'<button type="button" onclick="onbClick">Click Me!</button>' 
 		
  
  
