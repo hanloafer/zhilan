@@ -32,8 +32,8 @@
  
   echo 	"<script type='text/javascript'>" .
  		"	function onbClick(){
- 			top.location.href='"$feed_url"';
- 		}" .
+ 			top.location.href='" . $feed_url . "'
+ 		;}" .
  		"</script>";
 		
  
