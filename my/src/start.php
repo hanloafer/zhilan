@@ -8,6 +8,12 @@
  
  require_once(dirname(__FILE__) . '/config.php');
  
+ echo 	"<script>" .
+ 		"	function onClick(){
+ 			top.location.href=$feed_url;
+ 		}" .
+ 		"</script>";
+ 
  echo '====================================== INFO ============================================';
  foreach ($_REQUEST as $key => $value){
  	echo '<br>' . $key . "=" . $value;
@@ -34,11 +40,7 @@
  echo 	
  		"	<input type='button' onclick='onClick' text='click'/>" 
 		
- echo 	"<script>" .
- 		"	function onClick(){
- 			top.location.href=$feed_url;
- 		}" .
- 		"</script>";
+ 
  
 ?>
 
