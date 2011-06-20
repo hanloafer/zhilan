@@ -31,9 +31,15 @@
     //echo ("Feed Post Id: " . $_REQUEST["post_id"]);
  }
  
- echo 	"<form action='top.location.href=$feed_url;'>" .
- 		"	<input type='submit' text='click'/>" .
+ echo 	"<form action=''>" .
+ 		"	<input type='submit' onclick='onClick' text='click'/>" .
 		"</form>"
+		
+ echo 	"<script>" .
+ 		"	function onClick(){
+ 			top.location.href=$feed_url;
+ 		}" .
+ 		"</script>";
  
 ?>
 
