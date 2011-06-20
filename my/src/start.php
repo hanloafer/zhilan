@@ -1,3 +1,5 @@
+<html>
+<head>
 <?php
 /*
  * Created on Jun 20, 2011
@@ -8,18 +10,9 @@
  
  require_once(dirname(__FILE__) . '/config.php');
  
-// echo 	"<script type='text/javascript'>" .
-// 		"	function onbClick(){
-// 			top.location.href=$feed_url;
-// 		}" .
-// 		"</script>";
+
  
- echo '====================================== INFO ============================================';
- foreach ($_REQUEST as $key => $value){
- 	echo '<br>' . $key . "=" . $value;
- }
  
- echo '====================================== FEED ============================================';
  
  $app_id = APP_ID;
 
@@ -37,12 +30,27 @@
     //echo ("Feed Post Id: " . $_REQUEST["post_id"]);
  }
  
- echo 	
- 		'<button type="button" onclick="onbClick">Click Me!</button>' 
+  echo 	"<script type='text/javascript'>" .
+ 		"	function onbClick(){
+ 			top.location.href=$feed_url;
+ 		}" .
+ 		"</script>";
 		
  
  
 ?>
-
+</head>
+<body>
+<?php
+ echo '====================================== INFO ============================================';
+ foreach ($_REQUEST as $key => $value){
+ 	echo '<br>' . $key . "=" . $value;
+ }
+ 
+ echo '====================================== FEED ============================================';
+?>
+<button type="button" onclick="onbClick">Click Me!</button>
+</body>
+</html>
 
 
