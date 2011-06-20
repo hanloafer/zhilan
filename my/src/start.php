@@ -32,7 +32,7 @@
  
   echo 	"<script type='text/javascript'>" .
  		"	function onbClick(){
- 			top.location.href=$feed_url;
+ 			top.location.href='"$feed_url"';
  		}" .
  		"</script>";
 		
@@ -49,7 +49,7 @@
  
  echo '====================================== FEED ============================================';
 ?>
-<button type="button" onclick="onbClick">Click Me!</button>
+<button type="button" onclick="onbClick();">Click Me!</button>
 </body>
 </html>
 
