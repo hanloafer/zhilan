@@ -2,6 +2,8 @@ package isotest
 {
 	import flash.display.Graphics;
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
 	public class ViewPort extends Sprite
@@ -17,7 +19,32 @@ package isotest
 			_container.addChild(_itemContainer);
 			_container.x = 500;
 			initBg();
+			
+			this.addEventListener(Event.ADDED_TO_STAGE, onAdd);
+			
 		}
+		
+		private function onAdd(e:*):void{
+			this.parent.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown, true);
+			this.parent.addEventListener(MouseEvent.MOUSE_UP, onMouseUp, true);
+		}
+		
+		public function get container():Sprite
+		{
+			return _container;
+		}
+
+		private function onMouseDown(e:Event):void{
+			
+			_container.startDrag();
+			e.stopImmediatePropagation();
+		}
+		
+		private function onMouseUp(e:*):void{
+			e.stopImmediatePropagation();
+			_container.stopDrag();
+		}
+		
 		private var _container:Sprite;
 		
 		private var _itemContainer:Sprite;
@@ -27,7 +54,7 @@ package isotest
 			var grids:int = 20;
 			grids++;
 			var g:Graphics = _bgContainer.graphics;
-			g.lineStyle(0.5, 0xff0000);
+			g.lineStyle(0.5, 0x00ff00);
 			
 			var i:int,j:int;
 			var sx:Number,sy:Number,ex:Number, ey:Number;
@@ -54,18 +81,37 @@ package isotest
 			}
 			
 			g = this.graphics;
-			g.beginFill(0x0);
-			g.drawRect(0,0, 2000, 1000);
+			g.beginFill(0x000000);
+			g.drawRect(0,0, 2000, 2000);
 			g.endFill();
+			_bgContainer.cacheAsBitmap = true;
 		}
 		
 		public function addItem(item:IsoItem):void{
-			
+			trace("fuck");
+			var idx:int = _items.indexOf(item);
+			if(idx != -1){
+				return;
+			}else{
+				_items.push(item);
+				_itemContainer.addChild(item);
+				item.render();
+			}
 		}
 		
+		private var _items:Array = [];
+		
 		public function removeItem(item:IsoItem):void{
-			
+			var idx:int = _items.indexOf(item);
+			if(idx == -1){
+				return;
+			}else{
+				_items.splice(idx, 1);
+				_itemContainer.removeChild(item);
+			}
 		}
+		
+		
 		
 	}
 	

@@ -28,6 +28,7 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
+    <application path="DrawPathExample.as"/>
     <application path="iso.as"/>
   </applications>
   <modules/>
