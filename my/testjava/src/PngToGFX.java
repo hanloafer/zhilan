@@ -1,12 +1,37 @@
+import gfx.ActionConfigVO;
+import gfx.FrameInfo;
+import gfx.GfxConfigModel;
+import gfx.GfxGenrater;
+import gfx.LayerConfigVO;
+import gfx.NumberUtil;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
 
+/**
+ * @author hanlu.lu
+ * 
+ * gfx转换工具
+ *
+ */
 public class PngToGFX implements FilenameFilter {
+	
+	private GfxConfigModel gcm; 
+	
+	private GfxGenrater gg;
+
+	public PngToGFX() {
+		super();
+		gg = new GfxGenrater();
+	}
 
 	/**
 	 * @param args
@@ -16,150 +41,187 @@ public class PngToGFX implements FilenameFilter {
 		PngToGFX ptg = new PngToGFX();
 		File p = new File("src/dabaodaizou");
 		String [] fnames = p.list(ptg);
-		for (String string : fnames) {
-//			System.out.println(p.getAbsolutePath());
-			File png = new  File(p.getAbsolutePath() + "\\" + string);
-//			System.out.println(png.getAbsolutePath());
-			ptg.pngCutAlphaRect(png);
-//			break;
-		}
-//		int t = 0xffffffff;
-//		t = t>> 24;
-//		System.out.println(t);
-//		t = t & 0xff; 
-//		System.out.println(Integer.toHexString(t));
-//		System.out.println(t);
-	}
-	
-	private BufferedImage imgCutAlphaRect(BufferedImage img){
-		int w = img.getWidth();
-		int h = img.getHeight();
-		int top=-1, bottom=-1, left=-1, right=-1;
-//		int minRX, maxLX = w, minBY, maxTY = h;
-		int x, y;
-		//shang
-		System.out.println(w + "!" + h);
-		for(y=0; y<h; y++){
-			for(x=0; x<w; x++){
-				int c = img.getRGB(x, y);
-				c = c >> 24;
-				c &= 0xff;
-				if(c > 0){
-					top = y;
-					break;
-				}
-//				System.out.println(Integer.toHexString(c));
-			}
-			if(top > -1){
-				break;
-			}
-		}
-		System.out.println("t c");
-		for(y=h-1; y>-1; y--){
-			for(x=0; x<w; x++){
-				int c = img.getRGB(x, y);
-				c = c >> 24;
-				c &= 0xff;
-				if(c > 0){
-					bottom = y;
-					break;
-				}
-			}
-			if(bottom > -1){
-				break;
-			}
-		}
-		System.out.println("b c");
-		for(x=0; x<w; x++){
-			for(y=top; y<bottom; y++){
-				int c = img.getRGB(x, y);
-				c = c >> 24;
-				c &= 0xff;
-				if(c > 0){
-					left = x;
-					break;
-				}
-			}
-			if(left > -1){
-				break;
-			}
-		}
-		System.out.println("l c");
-		for(x=w-1; x> -1; x--){
-			for(y=top; y<bottom; y++){
-				int c = img.getRGB(x, y);
-				c = c >> 24;
-				c &= 0xff;
-				if(c > 0){
-					right = x;
-					break;
-				}
-			}
-			if(right > -1){
-				break;
-			}
-		}
-		int newW = right - left + 1;
-		int newH = bottom - top + 1;
-		//int [] rgbArray  = new int[newW * newH]; 
-		//img.getRGB(left, top, newW, newH, rgbArray, 0, newW);
-		int [] rgbArray  = new int[img.getWidth() * img.getHeight()]; 
 		
-		img.getRGB(0, 0, img.getWidth(), img.getHeight(), rgbArray, 0, img.getWidth());
+//		BufferedImage [] cutImgs = new BufferedImage[fnames.length];
+//		for (int i=0; i<fnames.length; i++) {
+//			String string = fnames[i];
+////			System.out.println(p.getAbsolutePath());
+//			File png = new  File(p.getAbsolutePath() + "\\" + string);
+////			System.out.println(png.getAbsolutePath());
+//			//BufferedImage cutImg = ptg.pngCutAlphaRect(png);
+//			//cutImgs[i] = cutImg;
+//		}
+//		BufferedImage mergeImg = null;//ptg.mergeBitmapData(cutImgs);
+//		try {
+//			ImageIO.write(mergeImg, "png", new File("src/cut/" + "merge.png"));
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
-		BufferedImage newimg = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB );
-		//newimg.setRGB(0, 0, newW, newH, rgbArray, 0, newW);
-		newimg.setRGB(0, 0, img.getWidth(), img.getHeight(), rgbArray, 0, img.getWidth());
-		return newimg;
+		
+		
+		
+		String assetpath = null;
+		String outpath = null;
+		if(args.length>0){
+			assetpath = args[0];
+			outpath = args[1];
+		}else{
+			assetpath = "E:\\workspace\\WebGame\\Mwo2WebAvatarTool\\launch\\charactor\\role";
+			outpath = "src/out";
+		}
+		
+		new PngToGFX().start(assetpath, outpath);
 	}
 	
+	private void start(String assetpath, String outputPath){
+		this.assetFolder = new File(assetpath);
+		this.outputFolder = new File(outputPath);
+		
+		if(!assetFolder.exists() || !assetFolder.isDirectory()){
+			System.out.println("[Error] assetFolder : " + assetFolder.getAbsolutePath() + " Not exists! ");
+			return;
+		}
+		if(!outputFolder.exists()){
+			outputFolder.mkdirs();
+		}
+		
+		gcm = GfxConfigModel.getInstance();
+		gcm.loadConfig("src/roleanimation.xml");
+		
+		String partNames [] = gcm.getAllLayernames();
+		actionNames = gcm.getAllActionNames();
+		actions = gcm.getActionNameMap();
+		
+		for(String layer : partNames){
+			genaratePart(layer);
+		}
+		
+	}
+	
+	private File assetFolder;
+	private File outputFolder;
+	
+	private void genaratePart(final String partname){
+		System.out.println(partname);
+		System.out.println();
+		
+		File [] files = assetFolder.listFiles(
+			new FilenameFilter() {
+				
+				@Override
+				public boolean accept(File arg0, String arg1) {
+					// TODO Auto-generated method stub
+					return partname.equals(arg1);
+				}
+				
+			}
+		);
+		if(files.length <= 0){
+			System.out.println("[Error] assetFolder : " + assetFolder.getAbsolutePath() + " Not exists part " + partname + "!");
+			return;
+		}
+		File partFile = files[0];
+		
+		File itemFolders [] = partFile.listFiles(
+				new FilenameFilter() {
+					
+					@Override
+					public boolean accept(File dir, String name) {
+						// TODO Auto-generated method stub
+						try {
+							if(name.length() == 3 && Integer.parseInt(name)>0){
+								return true;
+							}
+						} catch (NumberFormatException e) {
+							// TODO Auto-generated catch block
+							//e.printStackTrace();
+							return false;
+						}
+						return false;
+					}
+				}
+		);
+		
+		LayerConfigVO layerCfg = gcm.getLayerByName(partname);
+		
+		for(File itemFolder : itemFolders){
+			genarateItem(layerCfg.id, itemFolder);
+		}
+		System.out.println("---------------------------------------------------");
+	}
+	
+	private HashMap<String, ActionConfigVO> actions = new HashMap<String, ActionConfigVO>();
+	private String actionNames [];
 	
 	
-	private BufferedImage mergeBitmapData(BufferedImage [] bitmapDatas){
-		int w = 0,h = 0;
-		for(int i=0; i<bitmapDatas.length; i++){
-			BufferedImage tmp = bitmapDatas[i];
-			w += tmp.getWidth();
-			if(tmp.getHeight() > h){
-				h = tmp.getHeight();
+	private void genarateItem(int layerId, File itemFolder){
+		int itemId = Integer.parseInt(itemFolder.getName());
+		System.out.println(itemId+ ":");
+		
+//		final String [] actionNames = this.actionNames;
+//		File [] actions = itemFolder.listFiles(new FilenameFilter() {
+//			
+//			@Override
+//			public boolean accept(File dir, String name) {
+//				// TODO Auto-generated method stub
+//				return actionNames;
+//			}
+//		});
+		for(String actionName : actionNames){
+			File actionFolder = new File(itemFolder.getAbsolutePath() + "\\" + actionName);
+			if(actionFolder.exists()){
+				genarateAction(
+						layerId, 
+						itemId, 
+						actionFolder, 
+						actions.get(actionName)
+					);
 			}
 		}
-		int offsetX = 0;
-		BufferedImage newimg = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB );
-		for(int i=0; i<bitmapDatas.length; i++){
-			BufferedImage tmp = bitmapDatas[i];
-			int [] rgbArray = tmp.getRGB(0, 0, tmp.getWidth(), tmp.getHeight(), null, 0, tmp.getWidth());
-			newimg.setRGB(offsetX, 0, tmp.getWidth(), tmp.getHeight(), rgbArray, 0, tmp.getWidth());
-			
-			offsetX += tmp.getWidth();
-		}
-		return newimg;
+		System.out.println();
 	}
 	
-	private void pngCutAlphaRect(File png){
-		BufferedImage img = null;
+	private void genarateAction(int layerId, int itemId, File actionFolder, ActionConfigVO actionCfg){
+		ArrayList<BufferedImage> pngBmps = new ArrayList<BufferedImage>(); 
+		int i=0;
+		while(true){
+			String pngName = NumberUtil.to3String(i) + ".png";
+			File png = new File(actionFolder.getAbsolutePath() + "\\" + pngName);
+			if(png.exists()){
+				try {
+					BufferedImage pngBmp = ImageIO.read(png);
+					pngBmps.add(pngBmp);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}else{
+				break;
+			}
+			i++;
+		}
+		Object [] imgs = pngBmps.toArray();
+		BufferedImage [] bmps = new BufferedImage[imgs.length];
+		System.arraycopy(imgs, 0, bmps, 0, imgs.length);
+		
+		FrameInfo [] frameinfos = gg.imgsCutAlphaRect(bmps);
+		BufferedImage mergepng = gg.mergeBitmapData(frameinfos);
 		try {
-			img = ImageIO.read(png);
+			String gfxName = gcm.generateTexName(layerId, itemId, actionCfg.id);
+			File outFile = new File(outputFolder.getAbsolutePath()  + "\\" + gfxName + ".png");
+			ImageIO.write(mergepng, "png", outFile);
+			System.out.println(actionCfg.name + "\t\t\t" + pngBmps.size() + "F\t" + outFile.length());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
-		BufferedImage newimg = imgCutAlphaRect(img);
-		try {
-			ImageIO.write(newimg, "png", new File("src/cut/" + png.getName()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//xia 
-		//zuo 
-		//you
-		
-//		int [] bitmapData = img.getRGB(0, 0);
 	}
+	
+//	private void genarateGfx(int layerId, int itemId, int actionId, ){
+//		
+//	}
+	
+	
 
 	@Override
 	public boolean accept(File dir, String name) {
@@ -171,3 +233,4 @@ public class PngToGFX implements FilenameFilter {
 	}
 
 }
+

@@ -1,0 +1,31 @@
+﻿<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
+<Root>
+	<Identify TexMax="1000" SplitFolder="1" Mode="0" />
+	<Texture ImgExt=".png" ShadowAlpha="200" ShadowEnable="0" >
+		<!--GridX是横向排列多少个图片，GridY是纵向排列多少个。子项的意思是将这些文件都放置到哪个子文件夹中。FrameW和FrameH是每个输入图片的大小。OrgFrameW和OrgFrameH是遗留参数，没有用处-->
+		<Entry Name="body" ID="0" GridX="8" GridY="4" FrameW="400" FrameH="400" OrgFrameW="400" OrgFrameH="400" Outpath="xml/role" Start="0" End="8">
+			<IDRange Folder="body" ItemIdStart="0" ItemIdEnd="8"/>
+		</Entry>
+		<Entry Name="weapon" ID="1" GridX="8" GridY="4" FrameW="400" FrameH="400" OrgFrameW="400" OrgFrameH="400" Outpath="xml/role" Start="0" End="3">
+			<IDRange Folder="weapon" ItemIdStart="0" ItemIdEnd="3"/>
+		</Entry>
+		<Entry Name="skill" ID="2" GridX="8" GridY="4" FrameW="400" FrameH="400" OrgFrameW="400" OrgFrameH="400" Outpath="xml/role" Start="0" End="3">
+			<IDRange Folder="skill" ItemIdStart="0" ItemIdEnd="3"/>
+		</Entry>
+	</Texture>
+	<Anim>
+		<!--FramePerDir是每个方向的帧数，start是图片开始的号，End是结束的号。Space是图片编号中间间隔的数，Delay是每张图片的播放延迟帧数，Skip是表示跳过几帧播放一个图片。-->
+		<Entry Name="atk" ID="1" FramePerDir="10" Start="0" End="9" Space="0" Delay="15"	Skip="0"	/>
+		<Entry Name="await" ID="2" FramePerDir="10" Start="0" End="9" Space="0" Delay="15" Skip="0" />
+		<Entry Name="beaten" ID="3" FramePerDir="8" Start="0" End="7" Space="0" Delay="15" Skip="0" />
+		<Entry Name="die" ID="4" FramePerDir="10" Start="0" End="9" Space="0" Delay="15" Skip="0" />
+		<Entry Name="jump" ID="5" FramePerDir="10" Start="0" End="9" Space="0" Delay="15" Skip="0" />
+		<Entry Name="run" ID="6" FramePerDir="10" Start="0" End="9" Space="0" Delay="15" Skip="0" />
+		<Entry Name="skill" ID="7" FramePerDir="11" Start="0" End="10" Space="0" Delay="15" Skip="0" />
+		
+	</Anim>
+	<AnimDirSet>
+		<!--每个方向的图层排列顺序，只有四个方向，所以只有四行-->
+		<Entry Dir="0" Prop="0,1" Enable="1"/>
+	</AnimDirSet>
+</Root>
