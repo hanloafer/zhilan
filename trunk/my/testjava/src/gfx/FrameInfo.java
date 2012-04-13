@@ -8,5 +8,10 @@ public class FrameInfo {
 	
 	public int frameIdx;
 	
+	public int x;
+	public int y;
+	public int width;
+	public int height;
+	
 	public BufferedImage frameBitMap;
 }

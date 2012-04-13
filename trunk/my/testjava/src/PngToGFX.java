@@ -8,6 +8,8 @@ import gfx.NumberUtil;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,7 +71,9 @@ public class PngToGFX implements FilenameFilter {
 			outpath = args[1];
 		}else{
 			assetpath = "E:\\workspace\\WebGame\\Mwo2WebAvatarTool\\launch\\charactor\\role";
-			outpath = "src/out";
+			//outpath = "src/out";
+			outpath = "E:\\workspace\\WebGame\\ClientAssets\\assets\\avatar\\";
+			
 		}
 		
 		new PngToGFX().start(assetpath, outpath);
@@ -98,6 +102,7 @@ public class PngToGFX implements FilenameFilter {
 			genaratePart(layer);
 		}
 		
+		System.out.println(total + " kb");
 	}
 	
 	private File assetFolder;
@@ -192,6 +197,8 @@ public class PngToGFX implements FilenameFilter {
 			if(png.exists()){
 				try {
 					BufferedImage pngBmp = ImageIO.read(png);
+//					System.out.println(pngBmp.getPropertyNames());
+//					System.out.println(pngBmp.toString());
 					pngBmps.add(pngBmp);
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -207,15 +214,43 @@ public class PngToGFX implements FilenameFilter {
 		
 		FrameInfo [] frameinfos = gg.imgsCutAlphaRect(bmps);
 		BufferedImage mergepng = gg.mergeBitmapData(frameinfos);
+		
+		String gfxName = gcm.generateTexName(layerId, itemId, actionCfg.id);
 		try {
-			String gfxName = gcm.generateTexName(layerId, itemId, actionCfg.id);
-			File outFile = new File(outputFolder.getAbsolutePath()  + "\\" + gfxName + ".png");
-			ImageIO.write(mergepng, "png", outFile);
-			System.out.println(actionCfg.name + "\t\t\t" + pngBmps.size() + "F\t" + outFile.length());
-		} catch (IOException e) {
-			e.printStackTrace();
+			byte [] gfxData = gg.genarateGfx(frameinfos);
+			File gfxfile = new File(outputFolder.getAbsolutePath()  + "\\" + gfxName + ".gfx");
+			FileOutputStream fos = new FileOutputStream(gfxfile);
+			int offset = 0;
+			int len = 1024;
+			while(offset < gfxData.length){
+				if((gfxData.length - offset) < 1024){
+					len = gfxData.length - offset;
+				}
+				fos.write(gfxData, offset, len);
+				offset += len;
+			}
+			fos.close();
+			int size = (int)Math.ceil(gfxfile.length()/1024);
+			System.out.println(actionCfg.name + "\t\t\t" + pngBmps.size() + "F\t" + size + " kb");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+//		if(true){
+//			try {
+//				
+//				File outFile = new File(outputFolder.getAbsolutePath()  + "\\" + gfxName + ".png");
+//				ImageIO.write(mergepng, "PNG", outFile);
+//				int size = (int)Math.ceil(outFile.length()/1024);
+//				System.out.println(actionCfg.name + "\t\t\t" + pngBmps.size() + "F\t" + size + " kb");
+//				total+= size;
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
 	}
+	
+	private long total = 0;
 	
 //	private void genarateGfx(int layerId, int itemId, int actionId, ){
 //		
