@@ -23,7 +23,7 @@ package
 		
 		public function Main():void
 		{
-			addChild(new HelloTexture());
+			addChild(new HelloStarling());
 		}
 		
 		
