@@ -9,6 +9,7 @@ package mys3
 	import flash.display3D.IndexBuffer3D;
 	import flash.display3D.Program3D;
 	import flash.display3D.VertexBuffer3D;
+	import flash.geom.Matrix3D;
 	
 	/**
 	 * 
@@ -24,7 +25,6 @@ package mys3
 		private var _quads:Vector.<Quad>;
 		private var _context3D:Context3D;
 		
-		
 		private var _vectextBuffer:VertexBuffer3D;
 		private var _indexBuffer:IndexBuffer3D;
 		
@@ -39,6 +39,20 @@ package mys3
 		
 		public function addQuad(quad:Quad):void{
 			_quads.push(quad);
+		}
+		
+		private var  pm:Matrix3D;
+		
+		public function setMatrix(sW:Number,sH:Number):void
+		{
+			pm = new Matrix3D(Vector.<Number>(
+				[
+					2/sW,0,0,0,
+					0,-2/sH,0,0,
+					0,0,0,0,
+					-1,1,0,1
+				]));
+//			_context3D.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX,0,pm,true);
 		}
 		
 		public function rebuidBuffer():void{
@@ -118,8 +132,15 @@ package mys3
 		}
 		
 		public function setProgram():void{
-			var pm:PerspectiveMatrix3D = new PerspectiveMatrix3D();
-			pm.perspectiveFieldOfViewLH(1,1,1,10000);
+//			var pm:PerspectiveMatrix3D = new PerspectiveMatrix3D();
+//			pm = new Matrix3D(Vector.<Number>(
+//				[
+//					1,0,0,0,
+//					0,1,0,0,
+//					0,0,0,0,
+//					0,0,0,1
+//				]));
+//			pm.perspectiveFieldOfViewLH(1,1,1,1);
 			_context3D.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX,0,pm,true);
 			
 			
