@@ -68,7 +68,7 @@ package mys3
 			var vertextData:Vector.<Number> = new Vector.<Number>(28*quadNum, true);
 			var indexData:Vector.<uint> = new Vector.<uint>(6*quadNum,true);
 			
-			var color:uint,r:uint,g:uint,b:uint,a:uint;
+			var color:uint,r:Number,g:Number,b:Number,a:Number;
 			var v0:uint,v1:uint,v2:uint,v3:uint;
 			var c:uint = 0,n:uint=0,v:uint=0;
 			var quad:Quad;
@@ -81,7 +81,11 @@ package mys3
 				r = color>>16&0xff;
 				g = color>>8&0xff;
 				b = color&0xff;
-				trace(a);
+				a /= 0xff;
+				r /= 0xff;
+				g /= 0xff;
+				b /= 0xff;
+//				trace(a);
 				
 				//x,y,z r,g,b
 				v0 = v++;
@@ -165,8 +169,12 @@ package mys3
 			var program3d:Program3D = _context3D.createProgram();
 			program3d.upload(vectexAssember.agalcode, fragmentAssember.agalcode);
 //			_context3D.setDepthTest(true, Context3DCompareMode.LESS_EQUAL);
-			_context3D.setDepthTest(true,Context3DCompareMode.LESS_EQUAL);
+			
+			_context3D.setDepthTest(true,Context3DCompareMode.LESS_EQUAL);//在开启深度测试的情况下，可通过这样的设置启动alpha混合
 			_context3D.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA,Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
+			
+//			_context3D.setDepthTest(true,Context3DCompareMode.LESS_EQUAL);
+//			_context3D.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA,Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
 			_context3D.setProgram(program3d);
 			
 		}
