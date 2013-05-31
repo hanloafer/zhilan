@@ -4,6 +4,8 @@ package
 	import flash.display.Stage3D;
 	import flash.display.StageScaleMode;
 	import flash.display3D.Context3D;
+	import flash.display3D.Context3DBlendFactor;
+	import flash.display3D.Context3DCompareMode;
 	import flash.events.Event;
 	
 	import mys3.Quad;
@@ -46,17 +48,16 @@ package
 		private function onStage3dCreate(e:*):void{
 			trace( "GPU设备类型：",this._stage3d.context3D.driverInfo );
 			_context3d = _stage3d.context3D;
-			_context3d.configureBackBuffer(stage.stageWidth, stage.stageHeight,2,true);
+			_context3d.configureBackBuffer(stage.stageWidth, stage.stageHeight,2,false);
 			_context3d.enableErrorChecking = true;
 			
 			qrender = new QuadRender(_context3d);
 			qrender.setMatrix(stage.stageWidth, stage.stageHeight);
 			
-			createQuad(0,-0,qrender);
+			createQuad(0,-0,0x10ff0000,qrender);
+			createQuad(30,0,0x2000ff00,qrender);
+			createQuad(60,40,0x200000ff,qrender);
 			
-			createQuad(500,-0,qrender);
-			
-			createQuad(0,250,qrender);
 //			createQuad(490,0,qrender);
 //			createQuad(0,230,qrender);
 //			createQuad(980,0,qrender);
@@ -74,13 +75,13 @@ package
 			
 		}
 		
-		private function createQuad(x:Number, y:Number,qrender:QuadRender):Quad{
+		private function createQuad(x:Number, y:Number, color:uint,qrender:QuadRender):Quad{
 			var quad:Quad = new Quad();
-			quad.width = 5.1;
-			quad.height =5.1;
+			quad.width = 100;
+			quad.height =50;
 			quad.x = x;
 			quad.y = y;
-			quad.color = 0xff0000;
+			quad.color = color;
 			qrender.addQuad(quad);
 			return quad;
 		}
