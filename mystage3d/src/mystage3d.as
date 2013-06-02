@@ -8,6 +8,8 @@ package
 	import flash.display3D.Context3DCompareMode;
 	import flash.events.Event;
 	
+	import mys3.Image;
+	import mys3.ImageRender;
 	import mys3.Quad;
 	import mys3.QuadRender;
 	
@@ -19,6 +21,9 @@ package
 	[SWF(frameRate="30", width="1000", height="500")]
 	public class mystage3d extends Sprite
 	{
+		[Embed (source="test.jpg")]
+		private static var imgClass:Class;
+		
 		public function mystage3d()
 		{
 //			t(0xff00ff00>>>8);
@@ -44,6 +49,8 @@ package
 		}
 		
 		private var qrender:QuadRender; 
+
+		private var imageRender:ImageRender;
 		
 		private function onStage3dCreate(e:*):void{
 			trace( "GPU设备类型：",this._stage3d.context3D.driverInfo );
@@ -51,25 +58,32 @@ package
 			_context3d.configureBackBuffer(stage.stageWidth, stage.stageHeight,2,true);
 			_context3d.enableErrorChecking = true;
 			
-			qrender = new QuadRender(_context3d);
-			qrender.setMatrix(stage.stageWidth, stage.stageHeight);
+//			qrender = new QuadRender(_context3d);
+//			qrender.setMatrix(stage.stageWidth, stage.stageHeight);
+//			
+//			createQuad(0,-0,0x80ff0000,qrender);
+//			createQuad(30,0,0x8000ff00,qrender);
+//			createQuad(100,200,0x800000ff,qrender);
+//			
+////			createQuad(490,0,qrender);
+////			createQuad(0,230,qrender);
+////			createQuad(980,0,qrender);
+////			createQuad(0,230,qrender);
+//////			createQuad(0,0.8,qrender);
+//////			createQuad(-0.5,0,qrender);
+//////			createQuad(0.5,0,qrender);
+//////			createQuad(0,0.5,qrender);
+//			
+//			
+//			qrender.rebuidBuffer();
+//			qrender.setProgram();
 			
-			createQuad(0,-0,0x80ff0000,qrender);
-			createQuad(30,0,0x8000ff00,qrender);
-			createQuad(100,200,0x800000ff,qrender);
 			
-//			createQuad(490,0,qrender);
-//			createQuad(0,230,qrender);
-//			createQuad(980,0,qrender);
-//			createQuad(0,230,qrender);
-////			createQuad(0,0.8,qrender);
-////			createQuad(-0.5,0,qrender);
-////			createQuad(0.5,0,qrender);
-////			createQuad(0,0.5,qrender);
-			
-			
-			qrender.rebuidBuffer();
-			qrender.setProgram();
+			imageRender = new ImageRender(_context3d);
+			imageRender.setMatrix(stage.stageWidth, stage.stageHeight);
+			createImage(0,0,imageRender);
+			imageRender.rebuidBuffer();
+			imageRender.setProgram();
 			this.addEventListener(Event.ENTER_FRAME, onFrame);
 			
 			
@@ -82,12 +96,24 @@ package
 			quad.x = x;
 			quad.y = y;
 			quad.color = color;
+			quad.rotation = 45;
+			quad.scaleX = 10;
 			qrender.addQuad(quad);
 			return quad;
 		}
 		
+		private function createImage(x:Number, y:Number, qrender:ImageRender):void{
+			var image:Image = new Image();
+			image.x = 0;
+			image.y = 0;
+//			this.stage.addChild(new imgClass());
+			image.bitmapData = new imgClass().bitmapData;
+//			trace(image.bitmapData.width,image.bitmapData.height);
+			qrender.addQuad(image);
+		}
+		
 		private function onFrame(e:*):void{
-			qrender.render();
+			imageRender.render();
 		}
 	}
 }
