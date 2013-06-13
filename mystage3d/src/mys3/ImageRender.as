@@ -90,10 +90,9 @@ package mys3
 //				g /= 0xff;
 //				b /= 0xff;
 				//				trace(a);
-				
-				//x,y,z r,g,b
+					
 				pt.x = 0;
-				pt.y = quad.height;
+				pt.y = 0;
 				pt = matrix.transformPoint(pt);
 				
 				v0 = v++;
@@ -101,9 +100,9 @@ package mys3
 				vertextData[c++] = pt.y;
 				vertextData[c++] = z;
 				vertextData[c++] = 0;
-				vertextData[c++] = quad.height;
+				vertextData[c++] = 0;
 				
-				pt.x = 0;
+				pt.x = quad.width;
 				pt.y = 0;
 				pt = matrix.transformPoint(pt);
 				
@@ -111,21 +110,22 @@ package mys3
 				vertextData[c++] = pt.x;
 				vertextData[c++] = pt.y;
 				vertextData[c++] = z;
-				vertextData[c++] = 0;
+				vertextData[c++] = 1;
 				vertextData[c++] = 0;
 				
 				pt.x = quad.width;
-				pt.y = 0;
+				pt.y = quad.height;
 				pt = matrix.transformPoint(pt);
 				
 				v2 = v++;
 				vertextData[c++] = pt.x;
 				vertextData[c++] = pt.y;
 				vertextData[c++] = z;
-				vertextData[c++] = quad.width;
-				vertextData[c++] = 0;
+				vertextData[c++] = 1;
+				vertextData[c++] = 1;
 				
-				pt.x = quad.width;
+				//x,y,z r,g,b
+				pt.x = 0;
 				pt.y = quad.height;
 				pt = matrix.transformPoint(pt);
 				
@@ -133,8 +133,8 @@ package mys3
 				vertextData[c++] = pt.x;
 				vertextData[c++] = pt.y;
 				vertextData[c++] = z;
-				vertextData[c++] = quad.width;
-				vertextData[c++] = quad.height;
+				vertextData[c++] = 0;
+				vertextData[c++] = 1;
 				
 				indexData[n++] = v0;
 				indexData[n++] = v1;
@@ -143,7 +143,7 @@ package mys3
 				indexData[n++] = v2;
 				indexData[n++] = v3;
 				
-				var tex:Texture = _context3D.createTexture(quad.bitmapData.width,quad.bitmapData.height,Context3DTextureFormat.BGRA,false);
+				var tex:Texture = _context3D.createTexture(quad.bitmapData.width,quad.bitmapData.height,Context3DTextureFormat.BGRA,true);
 				tex.uploadFromBitmapData(quad.bitmapData);
 				_context3D.setTextureAt(0,tex);
 			}
@@ -157,7 +157,6 @@ package mys3
 			
 			_context3D.setVertexBufferAt( 0, _vectextBuffer, 0, Context3DVertexBufferFormat.FLOAT_3 );   // attribute #0 will contain the position information
 			_context3D.setVertexBufferAt( 1, _vectextBuffer, 3, Context3DVertexBufferFormat.FLOAT_2 );
-			
 		}
 		
 		public function setProgram():void{
@@ -173,10 +172,16 @@ package mys3
 			_context3D.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX,0,pm,true);
 			
 			
-			var vertexSrc:String = "m44 op,va0,vc0 \n" +//"mov op,va0 1\n" +
+//			var vertexSrc:String = "m44 op,va0,vc0 \n" +//"mov op,va0 1\n" +
+//				"mov v0,va1";
+//			var fragmentSrc:String = "tex ft0,v0,fs0 <2d,nearest>\n"+
+//				"mov oc,ft0";
+			
+			var vertexSrc:String = "m44 op,va0,vc0 \n" +
 				"mov v0,va1";
-			var fragmentSrc:String = "tex ft0, v0, fs0 <2d,nearest>\n"+
-				"mov oc, ft0";
+			
+			var fragmentSrc:String = "tex ft0,v0,fs0 <2d,nearest> \n" +
+				"mov oc,ft0";
 			
 			var vectexAssember:AGALMiniAssembler = new AGALMiniAssembler();
 			var fragmentAssember:AGALMiniAssembler = new AGALMiniAssembler();
@@ -187,8 +192,8 @@ package mys3
 			program3d.upload(vectexAssember.agalcode, fragmentAssember.agalcode);
 			//			_context3D.setDepthTest(true, Context3DCompareMode.LESS_EQUAL);
 			
-			_context3D.setDepthTest(true,Context3DCompareMode.LESS_EQUAL);//在开启深度测试的情况下，可通过这样的设置启动alpha混合
-			_context3D.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA,Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
+//			_context3D.setDepthTest(true,Context3DCompareMode.LESS_EQUAL);//在开启深度测试的情况下，可通过这样的设置启动alpha混合
+//			_context3D.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA,Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
 			
 			//			_context3D.setDepthTest(true,Context3DCompareMode.LESS_EQUAL);
 			//			_context3D.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA,Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
@@ -197,7 +202,7 @@ package mys3
 		}
 		
 		public function render():void{
-			_context3D.clear(1,1,1,1);
+			_context3D.clear(0,0,0,1);
 			_context3D.drawTriangles(_indexBuffer);
 			_context3D.present();
 		}

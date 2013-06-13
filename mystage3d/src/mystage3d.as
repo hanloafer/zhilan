@@ -8,6 +8,8 @@ package
 	import flash.display3D.Context3DCompareMode;
 	import flash.events.Event;
 	
+	import d3.My3DEngine;
+	
 	import mys3.Image;
 	import mys3.ImageRender;
 	import mys3.Quad;
@@ -58,6 +60,8 @@ package
 			_context3d.configureBackBuffer(stage.stageWidth, stage.stageHeight,2,true);
 			_context3d.enableErrorChecking = true;
 			
+			new My3DEngine(this.stage, _context3d);
+			
 //			qrender = new QuadRender(_context3d);
 //			qrender.setMatrix(stage.stageWidth, stage.stageHeight);
 //			
@@ -79,12 +83,12 @@ package
 //			qrender.setProgram();
 			
 			
-			imageRender = new ImageRender(_context3d);
-			imageRender.setMatrix(stage.stageWidth, stage.stageHeight);
-			createImage(0,0,imageRender);
-			imageRender.rebuidBuffer();
-			imageRender.setProgram();
-			this.addEventListener(Event.ENTER_FRAME, onFrame);
+//			imageRender = new ImageRender(_context3d);
+//			imageRender.setMatrix(stage.stageWidth, stage.stageHeight);
+//			createImage(0,0,imageRender);
+//			imageRender.rebuidBuffer();
+//			imageRender.setProgram();
+//			this.addEventListener(Event.ENTER_FRAME, onFrame);
 			
 			
 		}
